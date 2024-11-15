@@ -3,253 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpectraCraft | Live Status</title>
-    <style>
-        @font-face {
-            font-family: 'Minecraftia';
-            src: url('Minecraftia.ttf') format('truetype');
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Minecraftia', sans-serif;
-            font-weight: 700;
-            background: linear-gradient(120deg, #1a1a40, #2b2b73, #1a1a40);
-            background-size: 300% 300%;
-            animation: gradientAnimation 6s ease infinite;
-            overflow: hidden;
-            position: relative;
-        }
-
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        .container {
-            background: rgba(51, 51, 51, 0.8);
-            padding: 15px;
-            border-radius: 20px;
-            box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.7);
-            max-width: 1100px;
-            width: 95%;
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-        }
-        
-
-        .status-container {
-            display: flex;
-            align-items: center;
-            flex: 1;
-            font-size: 1.5em;
-            color: white;
-            padding: 0 10px;
-        }
-
-        .status {
-            margin-left: 5px;
-        }
-
-        .online {
-            color: #00FF00;
-        }
-
-        .offline {
-            color: #FF0000;
-        }
-
-        .dot {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: #ccc;
-            animation: pulse 1.5s infinite;
-            margin-left: 30px;
-            margin-right: 5px;
-        }
-
-        .online-dot {
-            background-color: #00FF00;
-        }
-
-        .offline-dot {
-            background-color: #FF0000;
-        }
-
-        .player-count {
-            font-size: 1.2em;
-            color: #4a8df8;
-            margin-left: 15px;
-        }
-
-        .ip-box {
-            text-align: center;
-            color: white;
-            font-size: 1.2em;
-            margin: 0 15px;
-            flex: 1;
-        }
-
-        .clock {
-            position: absolute;
-            bottom: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2em;
-            color: white;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 5px;
-            border-radius: 10px;
-            min-width: 150px;
-        }
-
-        .discord-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 50px;
-            height: 50px;
-            background-color: #5865F2;
-            border: none;
-            border-radius: 15px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-            overflow: hidden;
-        }
-
-        .discord-button:hover {
-            transform: scale(1.1);
-        }
-
-        .discord-icon {
-            width: 30px;
-            height: 30px;
-            background: url('https://cdn.prod.website-files.com/6257adef93867e50d84d30e2/636e0a6ca814282eca7172c6_icon_clyde_white_RGB.svg') no-repeat center center;
-            background-size: contain;
-            transition: transform 0.3s;
-        }
-    </style>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Eli_Zac</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <button class="discord-button" onclick="window.open('https://discord.spectracraft.com.au', '_blank')">
-        <div class="discord-icon"></div>
-    </button>
+    <header>
+        <h1>Welcome to Eli_Zac</h1>
+        <p>Your one-stop place to add Discord bots to your server.</p>
+    </header>
 
-    <!-- Containers for 4 servers -->
-    <div class="container" id="statusContainer1">
-        <div class="status-container">
-            <span id="serverName1">SpectraCraft</span>
-            <div id="dot1" class="dot"></div>
-            <div id="status1" class="status">Checking...</div>
+    <main>
+        <div class="bot-container">
+            <button class="add-bot" onclick="addBot(1)">Add Bot 1</button>
+            <button class="add-bot" onclick="addBot(2)">Add Bot 2</button>
+            <button class="add-bot" onclick="addBot(3)">Add Bot 3</button>
         </div>
-        <div class="ip-box" id="ipBox1">play.spectracraft.com.au</div>
-        <div id="playerCount1" class="player-count">Players Loading</div>
-    </div>
+    </main>
 
-    <div class="container" id="statusContainer2">
-        <div class="status-container">
-            <span id="serverName2">SpectraFabric</span>
-            <div id="dot2" class="dot"></div>
-            <div id="status2" class="status">Checking...</div>
-        </div>
-        <div class="ip-box" id="ipBox2">fabric.spectracraft.com.au</div>
-        <div id="playerCount2" class="player-count">Players Loading</div>
-    </div>
+    <footer>
+        <p>&copy; 2024 Eli_Zac. All rights reserved.</p>
+    </footer>
 
-    <div class="container" id="statusContainer3">
-        <div class="status-container">
-            <span id="serverName3">Main Website &nbsp;</span>
-            <div id="dot3" class="dot"></div>
-            <div id="status3" class="status">Checking...</div>
-        </div>
-        <div class="ip-box" id="ipBox3">spectracraft.com.au</div>
-        <div id="playerCount3" class="player-count"></div>
-    </div>
-
-    <div class="clock" id="clock"></div>
-
-    <script>
-        // Clock function
-        function updateClock() {
-            const now = new Date();
-            document.getElementById('clock').innerText = now.toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-
-        // Function to fetch and update server status
-        async function getServerStatus(serverIP, serverPort, serverId) {
-            try {
-                // Check if it's a Minecraft server or a website
-                if (serverId === 3 || serverId === 4) {
-                    // Check website status
-                    const response = await fetch(serverIP, { method: 'HEAD' }); // Use HEAD request to check status
-                    const statusDiv = document.getElementById(`status${serverId}`);
-                    const dotDiv = document.getElementById(`dot${serverId}`);
-
-                    if (response.ok) {
-                        statusDiv.textContent = "Online";
-                        statusDiv.classList.add('online');
-                        statusDiv.classList.remove('offline');
-                        dotDiv.classList.add('online-dot');
-                        dotDiv.classList.remove('offline-dot');
-                    } else {
-                        statusDiv.textContent = "Offline";
-                        statusDiv.classList.add('offline');
-                        statusDiv.classList.remove('online');
-                        dotDiv.classList.add('offline-dot');
-                        dotDiv.classList.remove('online-dot');
-                    }
-                } else {
-                    // Check Minecraft server status
-                    const response = await fetch(`https://api.mcsrvstat.us/2/${serverIP}:${serverPort}`);
-                    const data = await response.json();
-                    const statusDiv = document.getElementById(`status${serverId}`);
-                    const dotDiv = document.getElementById(`dot${serverId}`);
-                    const playerCountDiv = document.getElementById(`playerCount${serverId}`);
-                    const statusContainer = document.getElementById(`statusContainer${serverId}`);
-
-                    if (data.online) {
-                        statusDiv.textContent = "Online";
-                        statusDiv.classList.add('online');
-                        statusDiv.classList.remove('offline');
-                        dotDiv.classList.add('online-dot');
-                        dotDiv.classList.remove('offline-dot');
-                        playerCountDiv.textContent = `Players: ${data.players.online}/${data.players.max}`;
-                    } else {
-                        statusDiv.textContent = "Offline";
-                        statusDiv.classList.add('offline');
-                        statusDiv.classList.remove('online');
-                        dotDiv.classList.add('offline-dot');
-                        dotDiv.classList.remove('online-dot');
-                        playerCountDiv.textContent = `Players: None`;
-                    }
-                }
-            } catch (error) {
-                console.error('Error fetching server status:', error);
-            }
-        }
-
-        // Call getServerStatus for each server
-        setInterval(() => {
-            getServerStatus('play.spectracraft.com.au', 25565, 1); // Server 1
-            getServerStatus('fabric.spectracraft.com.au', 25565, 2); // Server 2
-            getServerStatus('https://spectracraft.com.au', null, 3); // Website 1
-        }, 5000); // Check every 5 seconds
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
