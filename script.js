@@ -56,10 +56,11 @@ async function fetchManifest() {
         const thumbnail = getThumbnail(file);
   
         return `
+          <a href="${url}" target="_blank">${formatFileName(file)}
           <li>
             <img src="${thumbnail}" alt="${file}">
-            <a href="${url}" target="_blank">${formatFileName(file)}</a>
-          </li>`;
+          </li>
+          </a>`;
       }).join('');
   }
   
