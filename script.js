@@ -2,28 +2,42 @@ async function fetchManifest() {
     try {
       const response = await fetch('manifest.json');
       const data = await response.json();
-      return data.files;
+      return data;
     } catch (error) {
       console.error('Error fetching manifest:', error);
-      return [];
+      return { images: [], files: [] };
     }
   }
   
-  function searchFiles(files, query) {
-    return files.filter(file => file.toLowerCase().includes(query.toLowerCase()));
+  function searchFiles(manifest, query) {
+    const imageResults = manifest.images.filter(image =>
+      image.toLowerCase().includes(query.toLowerCase())
+    ).map(image => ({
+      url: `https://files.spectracraft.com.au/${image}`,
+      name: image
+    }));
+  
+    const fileResults = manifest.files.filter(file =>
+      file.toLowerCase().includes(query.toLowerCase())
+    ).map(file => ({
+      url: file,
+      name: file
+    }));
+  
+    return [...imageResults, ...fileResults];
   }
   
   async function setupSearch() {
-    const files = await fetchManifest();
+    const manifest = await fetchManifest();
     const searchInput = document.getElementById('search');
     const resultsList = document.getElementById('results');
   
     searchInput.addEventListener('input', () => {
       const query = searchInput.value;
-      const results = searchFiles(files, query);
+      const results = searchFiles(manifest, query);
   
-      resultsList.innerHTML = results.map(file => 
-        `<li><a href="${file}" target="_blank">${file}</a></li>`
+      resultsList.innerHTML = results.map(result =>
+        `<li><a href="${result.url}" target="_blank">${result.name}</a></li>`
       ).join('');
     });
   }

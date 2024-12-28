@@ -1,8 +1,13 @@
 {
+    "images": [
+      "image/logo.png",
+      "image/banner.jpg",
+      "image/avatar.png"
+    ],
     "files": [
-      "images/logo.png",
       "docs/manual.pdf",
-      "assets/icons/favicon.ico"
+      "assets/icons/favicon.ico",
+      "downloads/setup.exe"
     ]
   }
   
