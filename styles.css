@@ -34,14 +34,24 @@ body {
   
   li {
     margin: 10px 0;
+    display: flex;
+    align-items: center;
   }
   
-  a {
+  li img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+  
+  li a {
     text-decoration: none;
     color: #007BFF;
+    font-size: 16px;
   }
   
-  a:hover {
+  li a:hover {
     text-decoration: underline;
   }
   

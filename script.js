@@ -27,6 +27,26 @@ async function fetchManifest() {
     }
   }
   
+  function getThumbnail(file) {
+    const fileExtension = file.split('.').pop().toLowerCase();
+  
+    // If it's an image, generate the thumbnail
+    if (fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg') {
+      return `https://files.spectracraft.com.au/${file}`;
+    }
+  
+    // For other file types, return a generic icon
+    if (fileExtension === 'pdf') {
+      return 'https://upload.wikimedia.org/wikipedia/commons/3/3b/PDF_icon.svg'; // Example PDF icon
+    }
+  
+    if (fileExtension === 'exe') {
+      return 'https://upload.wikimedia.org/wikipedia/commons/9/91/Windows_Icon.png'; // Example EXE icon
+    }
+  
+    return 'https://upload.wikimedia.org/wikipedia/commons/1/12/File_icon.svg'; // Generic file icon
+  }
+  
   function renderFiles(files, folderName) {
     const resultsList = document.getElementById('results');
     resultsList.innerHTML = `<h2>${folderName.charAt(0).toUpperCase() + folderName.slice(1)}</h2>` +
@@ -35,7 +55,13 @@ async function fetchManifest() {
           ? `https://files.spectracraft.com.au/${file}`
           : file;
   
-        return `<li><a href="${url}" target="_blank">${formatFileName(file)}</a></li>`;
+        const thumbnail = getThumbnail(file);
+  
+        return `
+          <li>
+            <img src="${thumbnail}" alt="${file}">
+            <a href="${url}" target="_blank">${formatFileName(file)}</a>
+          </li>`;
       }).join('');
   }
   
