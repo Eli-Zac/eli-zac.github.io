@@ -9,19 +9,26 @@ async function fetchManifest() {
     }
   }
   
+  function formatFileName(path) {
+    // Extract filename from the path
+    const fileName = path.split('/').pop().split('.')[0];
+    // Capitalize the first letter and return
+    return fileName.charAt(0).toUpperCase() + fileName.slice(1);
+  }
+  
   function searchFiles(manifest, query) {
     const imageResults = manifest.images.filter(image =>
       image.toLowerCase().includes(query.toLowerCase())
     ).map(image => ({
       url: `https://files.spectracraft.com.au/${image}`,
-      name: image
+      name: formatFileName(image)
     }));
   
     const fileResults = manifest.files.filter(file =>
       file.toLowerCase().includes(query.toLowerCase())
     ).map(file => ({
       url: file,
-      name: file
+      name: formatFileName(file)
     }));
   
     return [...imageResults, ...fileResults];
