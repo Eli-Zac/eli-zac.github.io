@@ -1,13 +1,27 @@
 // Sample manifest data
 const manifest = {
-    images: [
-      { path: "image/logo.png", name: "Logo" },
-      { path: "image/banner.png", name: "Banner" },
-    ],
-    files: [
-      { path: "file/document.txt", name: "Document" },
-      { path: "file/readme.pdf", name: "ReadMe" },
-    ]
+    images: {
+      root: [
+        { path: "image/gradient.png", name: "Gradient" },
+        { path: "image/logo-bg.png", name: "Logo Background" },
+        { path: "image/logo.png", name: "Logo" }
+      ],
+      background: [
+        { path: "image/background/BG-Slide-1.webp", name: "BG Slide 1" },
+        { path: "image/background/BG-Slide-2.webp", name: "BG Slide 2" },
+        { path: "image/background/BG-Slide-3.webp", name: "BG Slide 3" },
+        { path: "image/background/BG-Slide-4.webp", "name": "BG Slide 4" }
+      ],
+      favicon: [
+        { path: "image/favicon/android-chrome-192x192.png", name: "Android Chrome 192x192" },
+        { path: "image/favicon/android-chrome-512x512.png", name: "Android Chrome 512x512" },
+        { path: "image/favicon/apple-touch-icon.png", name: "Apple Touch Icon" },
+        { path: "image/favicon/favicon-16x16.png", name: "Favicon 16x16" },
+        { path: "image/favicon/favicon-32x32.png", name: "Favicon 32x32" },
+        { path: "image/favicon/favicon.ico", name: "Favicon ICO" },
+        { path: "image/favicon/site.webmanifest", name: "Site Web Manifest" }
+      ]
+    }
   };
   
   // DOM elements
@@ -17,24 +31,35 @@ const manifest = {
   
   // Function to display folders and files
   function displayFoldersAndFiles() {
-    // Display folders (images and files)
-    const folderNames = Object.keys(manifest);
-    foldersContainer.innerHTML = ''; // Clear previous folders
-    
-    folderNames.forEach(folder => {
+    // Display folders (main categories like 'images')
+    Object.keys(manifest).forEach(folderKey => {
       const folderDiv = document.createElement('div');
       folderDiv.classList.add('folder');
-      folderDiv.textContent = folder.charAt(0).toUpperCase() + folder.slice(1); // Capitalize the folder name
-      folderDiv.onclick = () => displayFilesInFolder(folder);
+      folderDiv.textContent = folderKey.charAt(0).toUpperCase() + folderKey.slice(1); // Capitalize the folder name
+      folderDiv.onclick = () => displaySubFoldersAndFiles(folderKey);
       foldersContainer.appendChild(folderDiv);
     });
   }
   
-  // Function to display files in the selected folder
-  function displayFilesInFolder(folder) {
-    const files = manifest[folder];
+  // Function to display files in the selected folder and its subfolders
+  function displaySubFoldersAndFiles(folderKey) {
+    const subFolders = manifest[folderKey];
     fileListContainer.innerHTML = ''; // Clear previous file list
+    
+    // Display subfolders (e.g., background, favicon)
+    Object.keys(subFolders).forEach(subFolder => {
+      const subFolderDiv = document.createElement('div');
+      subFolderDiv.classList.add('folder');
+      subFolderDiv.textContent = subFolder.charAt(0).toUpperCase() + subFolder.slice(1); // Capitalize the subfolder name
+      subFolderDiv.onclick = () => displayFilesInSubFolder(subFolder, subFolders[subFolder]);
+      foldersContainer.appendChild(subFolderDiv);
+    });
+  }
   
+  // Function to display files in a subfolder
+  function displayFilesInSubFolder(subFolder, files) {
+    fileListContainer.innerHTML = ''; // Clear previous file list
+    
     files.forEach(file => {
       const listItem = document.createElement('li');
       
@@ -62,33 +87,37 @@ const manifest = {
     const query = searchInput.value.toLowerCase();
     
     // Filter and display files based on the search query
-    const folderNames = Object.keys(manifest);
     fileListContainer.innerHTML = ''; // Clear previous file list
     
-    folderNames.forEach(folder => {
-      const filteredFiles = manifest[folder].filter(file =>
-        file.name.toLowerCase().includes(query)
-      );
+    // Search through all folders and files
+    Object.keys(manifest).forEach(folderKey => {
+      const subFolders = manifest[folderKey];
       
-      if (filteredFiles.length > 0) {
-        filteredFiles.forEach(file => {
-          const listItem = document.createElement('li');
-          
-          const img = document.createElement('img');
-          img.src = `https://files.spectracraft.com.au/${file.path}`;
-          img.alt = file.name;
+      Object.keys(subFolders).forEach(subFolder => {
+        const filteredFiles = subFolders[subFolder].filter(file =>
+          file.name.toLowerCase().includes(query)
+        );
+        
+        if (filteredFiles.length > 0) {
+          filteredFiles.forEach(file => {
+            const listItem = document.createElement('li');
+            
+            const img = document.createElement('img');
+            img.src = `https://files.spectracraft.com.au/${file.path}`;
+            img.alt = file.name;
   
-          const fileLink = document.createElement('a');
-          fileLink.href = `https://files.spectracraft.com.au/${file.path}`;
-          fileLink.target = "_blank";
-          fileLink.textContent = file.name;
+            const fileLink = document.createElement('a');
+            fileLink.href = `https://files.spectracraft.com.au/${file.path}`;
+            fileLink.target = "_blank";
+            fileLink.textContent = file.name;
   
-          listItem.appendChild(img);
-          listItem.appendChild(fileLink);
+            listItem.appendChild(img);
+            listItem.appendChild(fileLink);
   
-          fileListContainer.appendChild(listItem);
-        });
-      }
+            fileListContainer.appendChild(listItem);
+          });
+        }
+      });
     });
   }
   
