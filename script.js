@@ -5,49 +5,44 @@ async function fetchManifest() {
       return data;
     } catch (error) {
       console.error('Error fetching manifest:', error);
-      return { images: [], files: [] };
+      return {};
     }
   }
   
   function formatFileName(path) {
-    // Extract filename from the path
     const fileName = path.split('/').pop().split('.')[0];
-    // Capitalize the first letter and return
     return fileName.charAt(0).toUpperCase() + fileName.slice(1);
   }
   
-  function searchFiles(manifest, query) {
-    const imageResults = manifest.images.filter(image =>
-      image.toLowerCase().includes(query.toLowerCase())
-    ).map(image => ({
-      url: `https://files.spectracraft.com.au/${image}`,
-      name: formatFileName(image)
-    }));
+  function renderFolders(manifest) {
+    const foldersDiv = document.getElementById('folders');
+    foldersDiv.innerHTML = '';
   
-    const fileResults = manifest.files.filter(file =>
-      file.toLowerCase().includes(query.toLowerCase())
-    ).map(file => ({
-      url: file,
-      name: formatFileName(file)
-    }));
-  
-    return [...imageResults, ...fileResults];
+    for (const section in manifest) {
+      const folderDiv = document.createElement('div');
+      folderDiv.className = 'folder';
+      folderDiv.textContent = section.charAt(0).toUpperCase() + section.slice(1);
+      folderDiv.addEventListener('click', () => renderFiles(manifest[section], section));
+      foldersDiv.appendChild(folderDiv);
+    }
   }
   
-  async function setupSearch() {
-    const manifest = await fetchManifest();
-    const searchInput = document.getElementById('search');
+  function renderFiles(files, folderName) {
     const resultsList = document.getElementById('results');
+    resultsList.innerHTML = `<h2>${folderName.charAt(0).toUpperCase() + folderName.slice(1)}</h2>` +
+      files.map(file => {
+        const url = folderName === 'images'
+          ? `https://files.spectracraft.com.au/${file}`
+          : file;
   
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value;
-      const results = searchFiles(manifest, query);
-  
-      resultsList.innerHTML = results.map(result =>
-        `<li><a href="${result.url}" target="_blank">${result.name}</a></li>`
-      ).join('');
-    });
+        return `<li><a href="${url}" target="_blank">${formatFileName(file)}</a></li>`;
+      }).join('');
   }
   
-  setupSearch();
+  async function setupExplorer() {
+    const manifest = await fetchManifest();
+    renderFolders(manifest);
+  }
+  
+  setupExplorer();
   
