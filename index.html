@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Files - SpectraCraft</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Hosting</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>File Explorer</h1>
-  <div id="folders"></div>
-  <ul id="results"></ul>
-  <script src="script.js"></script>
+
+    <h1>File Explorer</h1>
+
+    <!-- Search Bar -->
+    <div id="search-bar">
+        <input type="text" id="search-input" placeholder="Search for files...">
+    </div>
+
+    <!-- Folder Container -->
+    <div id="folders">
+        <!-- Folders will be dynamically generated here -->
+    </div>
+
+    <!-- File List (Initially empty) -->
+    <ul id="file-list">
+        <!-- Files will be dynamically generated here -->
+    </ul>
+
+    <script src="script.js"></script>
 </body>
 </html>

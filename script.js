@@ -1,74 +1,100 @@
-async function fetchManifest() {
-    try {
-      const response = await fetch('manifest.json');
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching manifest:', error);
-      return {};
-    }
-  }
+// Sample manifest data
+const manifest = {
+    images: [
+      { path: "image/logo.png", name: "Logo" },
+      { path: "image/banner.png", name: "Banner" },
+    ],
+    files: [
+      { path: "file/document.txt", name: "Document" },
+      { path: "file/readme.pdf", name: "ReadMe" },
+    ]
+  };
   
-  function formatFileName(path) {
-    const fileName = path.split('/').pop().split('.')[0];
-    return fileName.charAt(0).toUpperCase() + fileName.slice(1);
-  }
+  // DOM elements
+  const searchInput = document.getElementById('search-input');
+  const foldersContainer = document.getElementById('folders');
+  const fileListContainer = document.getElementById('file-list');
   
-  function renderFolders(manifest) {
-    const foldersDiv = document.getElementById('folders');
-    foldersDiv.innerHTML = '';
-  
-    for (const section in manifest) {
+  // Function to display folders and files
+  function displayFoldersAndFiles() {
+    // Display folders (images and files)
+    const folderNames = Object.keys(manifest);
+    foldersContainer.innerHTML = ''; // Clear previous folders
+    
+    folderNames.forEach(folder => {
       const folderDiv = document.createElement('div');
-      folderDiv.className = 'folder';
-      folderDiv.textContent = section.charAt(0).toUpperCase() + section.slice(1);
-      folderDiv.addEventListener('click', () => renderFiles(manifest[section], section));
-      foldersDiv.appendChild(folderDiv);
-    }
+      folderDiv.classList.add('folder');
+      folderDiv.textContent = folder.charAt(0).toUpperCase() + folder.slice(1); // Capitalize the folder name
+      folderDiv.onclick = () => displayFilesInFolder(folder);
+      foldersContainer.appendChild(folderDiv);
+    });
   }
   
-  function getThumbnail(file) {
-    const fileExtension = file.split('.').pop().toLowerCase();
+  // Function to display files in the selected folder
+  function displayFilesInFolder(folder) {
+    const files = manifest[folder];
+    fileListContainer.innerHTML = ''; // Clear previous file list
   
-    if (fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg') {
-      return `https://files.spectracraft.com.au/${file}`;
-    }
+    files.forEach(file => {
+      const listItem = document.createElement('li');
+      
+      // Create a thumbnail (placeholder for now)
+      const img = document.createElement('img');
+      img.src = `https://files.spectracraft.com.au/${file.path}`;
+      img.alt = file.name;
   
-    if (fileExtension === 'pdf') {
-      return 'https://upload.wikimedia.org/wikipedia/commons/3/3b/PDF_icon.svg';
-    }
+      // Create a link to download or view the file
+      const fileLink = document.createElement('a');
+      fileLink.href = `https://files.spectracraft.com.au/${file.path}`;
+      fileLink.target = "_blank";
+      fileLink.textContent = file.name;
   
-    if (fileExtension === 'exe') {
-      return 'https://upload.wikimedia.org/wikipedia/commons/9/91/Windows_Icon.png';
-    }
+      // Append thumbnail and link to the list item
+      listItem.appendChild(img);
+      listItem.appendChild(fileLink);
   
-    return 'https://upload.wikimedia.org/wikipedia/commons/1/12/File_icon.svg';
+      fileListContainer.appendChild(listItem);
+    });
   }
   
-  function renderFiles(files, folderName) {
-    const resultsList = document.getElementById('results');
-    resultsList.innerHTML = `<h2 style="text-align: center; margin-bottom: 20px;">${folderName.charAt(0).toUpperCase() + folderName.slice(1)}</h2>` +
-      files.map(file => {
-        const url = folderName === 'images'
-          ? `https://files.spectracraft.com.au/${file}`
-          : file;
+  // Function to handle search functionality
+  function handleSearch() {
+    const query = searchInput.value.toLowerCase();
+    
+    // Filter and display files based on the search query
+    const folderNames = Object.keys(manifest);
+    fileListContainer.innerHTML = ''; // Clear previous file list
+    
+    folderNames.forEach(folder => {
+      const filteredFiles = manifest[folder].filter(file =>
+        file.name.toLowerCase().includes(query)
+      );
+      
+      if (filteredFiles.length > 0) {
+        filteredFiles.forEach(file => {
+          const listItem = document.createElement('li');
+          
+          const img = document.createElement('img');
+          img.src = `https://files.spectracraft.com.au/${file.path}`;
+          img.alt = file.name;
   
-        const thumbnail = getThumbnail(file);
+          const fileLink = document.createElement('a');
+          fileLink.href = `https://files.spectracraft.com.au/${file.path}`;
+          fileLink.target = "_blank";
+          fileLink.textContent = file.name;
   
-        return `
-          <a href="${url}" target="_blank">
-          <li>
-            <img src="${thumbnail}" alt="${file}">
-            ${formatFileName(file)}
-          </li>
-          </a>`;
-      }).join('');
+          listItem.appendChild(img);
+          listItem.appendChild(fileLink);
+  
+          fileListContainer.appendChild(listItem);
+        });
+      }
+    });
   }
   
-  async function setupExplorer() {
-    const manifest = await fetchManifest();
-    renderFolders(manifest);
-  }
+  // Event listener for search input
+  searchInput.addEventListener('input', handleSearch);
   
-  setupExplorer();
+  // Initial display of folders
+  displayFoldersAndFiles();
   
