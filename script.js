@@ -30,26 +30,24 @@ async function fetchManifest() {
   function getThumbnail(file) {
     const fileExtension = file.split('.').pop().toLowerCase();
   
-    // If it's an image, generate the thumbnail
     if (fileExtension === 'png' || fileExtension === 'jpg' || fileExtension === 'jpeg') {
       return `https://files.spectracraft.com.au/${file}`;
     }
   
-    // For other file types, return a generic icon
     if (fileExtension === 'pdf') {
-      return 'https://upload.wikimedia.org/wikipedia/commons/3/3b/PDF_icon.svg'; // Example PDF icon
+      return 'https://upload.wikimedia.org/wikipedia/commons/3/3b/PDF_icon.svg';
     }
   
     if (fileExtension === 'exe') {
-      return 'https://upload.wikimedia.org/wikipedia/commons/9/91/Windows_Icon.png'; // Example EXE icon
+      return 'https://upload.wikimedia.org/wikipedia/commons/9/91/Windows_Icon.png';
     }
   
-    return 'https://upload.wikimedia.org/wikipedia/commons/1/12/File_icon.svg'; // Generic file icon
+    return 'https://upload.wikimedia.org/wikipedia/commons/1/12/File_icon.svg';
   }
   
   function renderFiles(files, folderName) {
     const resultsList = document.getElementById('results');
-    resultsList.innerHTML = `<h2>${folderName.charAt(0).toUpperCase() + folderName.slice(1)}</h2>` +
+    resultsList.innerHTML = `<h2 style="text-align: center; margin-bottom: 20px;">${folderName.charAt(0).toUpperCase() + folderName.slice(1)}</h2>` +
       files.map(file => {
         const url = folderName === 'images'
           ? `https://files.spectracraft.com.au/${file}`
